@@ -20,7 +20,7 @@ def train_model(data):
     return model
 
 def main():
-    st.title("Dashboard illustrativa: Parassiti Maschili sotto analisi 🔍🪳")
+    st.title("Dashboard illustrativa: Parassiti Maschili sotto analisi ")
     data = load_data()
     model = train_model(data)
 
