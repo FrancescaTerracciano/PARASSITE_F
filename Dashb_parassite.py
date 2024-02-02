@@ -21,7 +21,7 @@ def train_model(data):
     return model
 
 def main():
-    st.title("Dashboard di Analisi e Predizione per Sheet3 - temp_humid_data")
+    st.title("Dashboard illustrativa: Parassiti Maschili sotto analisi 🔍🪳")
     data = load_data()
     model = train_model(data)
 
@@ -36,11 +36,11 @@ def main():
     filtered_data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
 
     # Grafico lineare per temperatura e umidità
-    st.subheader("Analisi di Temperatura e Umidità")
+    st.subheader("Analisi di Temperatura e Umidità 🌡️")
     st.write("Questo grafico mostra l'andamento della temperatura e dell'umidità nel periodo selezionato.")
     fig, ax = plt.subplots(figsize=(10, 4))
     sns.lineplot(x=filtered_data['Date'], y=filtered_data['temperature_mean'], label='Temperatura', ax=ax)
-    sns.lineplot(x=filtered_data['Date'], y=filtered_data['relativehumidity_mean'], label='Umidità', ax=ax, color='orange')
+    sns.lineplot(x=filtered_data['Date'], y=filtered_data['relativehumidity_mean'], label='Umidità', ax=ax, color='red')
     plt.xticks(rotation=45)
     plt.legend()
     st.pyplot(fig)
@@ -59,7 +59,7 @@ def main():
     st.write("Statistiche descrittive delle variabili nel dataset.")
     st.write(filtered_data.describe())
 
-    # Mappa di calore per le correlazioni
+    # Mappa di calore per le correlazioni 
     st.subheader("Mappa di Calore delle Correlazioni")
     st.write("Questa mappa di calore mostra le correlazioni tra temperatura, umidità e numero di adulti maschi.")
     corr = filtered_data.corr()
@@ -68,12 +68,12 @@ def main():
     st.pyplot(fig)
 
     # Sezione di previsione
-    st.sidebar.subheader("Predizione di Adulti Maschi")
+    st.sidebar.subheader("Effettua la predizione di Adulti Maschi 📊")
     temp_input = st.sidebar.number_input("Inserisci la Temperatura Media", value=float(data['temperature_mean'].mean()))
     humidity_input = st.sidebar.number_input("Inserisci l'Umidità Relativa Media", value=float(data['relativehumidity_mean'].mean()))
     if st.sidebar.button("Prevedi"):
         prediction = model.predict([[temp_input, humidity_input]])[0]
-        st.sidebar.write(f"Numero previsto di adulti maschi: {prediction:.2f}")
+        st.sidebar.write(f"Il modello ha predetto come numero di adulti maschi per i dati forniti: {prediction:.2f}")
 
 if __name__ == "__main__":
     main()
