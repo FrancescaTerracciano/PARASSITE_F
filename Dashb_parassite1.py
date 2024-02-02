@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
-#import numpy as np
 
 # Funzione per caricare i dati
 @st.cache_resource
@@ -65,6 +64,33 @@ def main():
     corr = filtered_data.corr()
     fig, ax = plt.subplots()
     sns.heatmap(corr, annot=True, ax=ax)
+    st.pyplot(fig)
+
+    # Box Plot per Temperatura e Umidità
+    st.subheader("Box Plot per Temperatura e Umidità")
+    fig, ax = plt.subplots(figsize=(10, 4))
+    sns.boxplot(data=filtered_data[['temperature_mean', 'relativehumidity_mean']], ax=ax)
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+
+    # Scatter Plot con Regressione
+    st.subheader("Relazione tra Temperatura e Adulti Maschi")
+    fig, ax = plt.subplots(figsize=(10, 4))
+    sns.regplot(x=filtered_data['temperature_mean'], y=filtered_data['no. of Adult males'], ax=ax)
+    st.pyplot(fig)
+
+    # Istogramma per il Numero di Adulti Maschi
+    st.subheader("Distribuzione del Numero di Adulti Maschi")
+    fig, ax = plt.subplots(figsize=(10, 4))
+    sns.histplot(filtered_data['no. of Adult males'], bins=20, kde=True, color='purple', ax=ax)
+    st.pyplot(fig)
+
+    # Grafico a Torta per il Numero di Adulti Maschi
+    st.subheader("Distribuzione Percentuale del Numero di Adulti Maschi")
+    fig, ax = plt.subplots()
+    filtered_data['Category'] = pd.cut(filtered_data['no. of Adult males'], bins=[0, 10, 20, 30, 40, 50], labels=['0-10', '10-20', '20-30', '30-40', '40-50'])
+    filtered_data['Category'].value_counts().plot.pie(autopct='%1.1f%%', startangle=90, ax=ax, colors=['#66b3ff','#99ff99','#ffcc99','#c2c2f0','#ffb3e6'])
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     st.pyplot(fig)
 
     # Sezione di previsione
